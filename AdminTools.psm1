@@ -1,4 +1,4 @@
-﻿<#New-ModuleManifest $manifest
+﻿<#
     $manifest = @{
     Path='AdminTools.psd1'
     Author='Rich Fletcher' 
@@ -9,8 +9,21 @@
     PowerShellVersion='3.0'
     RootModule='.\AdminTools.psm1'
     }
+    New-ModuleManifest @manifest
 #>
 function Invoke-OSShutdown {
+<#
+	.SYNOPSIS
+		This function provides a way to invoke a local or remote computer to logoff/shutdown/etc via WMI.
+	.PARAMETER Computername
+		The name of the computer to invoke action on. Defaults to local machine
+	.PARAMETER Arg
+		Win32Shutdown arguments, defaulted to force logoff (4) see https://msdn.microsoft.com/en-us/library/windows/desktop/aa394058(v=vs.85).aspx
+	.PARAMETER ErrorLog
+		The path to where errors should be captured, requires LogErrors to be set to true.
+	.PARAMETER LogErrors
+		Logs the errors when set.
+	#>
 [CmdletBinding()]
 param(
     [string[]]$ComputerName=$env:COMPUTERNAME,
@@ -41,6 +54,20 @@ param(
 
 }
 function Get-DiskInfo {
+<#
+	.SYNOPSIS
+		This function provides a way to pull drive information from alocal or remote computer.
+	.PARAMETER Computername
+		The name of the computer to invoke action on. Defaults to local machine
+	.PARAMETER DriveType
+		Win32_LogicalDisk DriveType, defaulted to local disk (3) see https://msdn.microsoft.com/en-us/library/windows/desktop/aa394173(v=vs.85).aspx
+	.PARAMETER ErrorLog
+		The path to where errors should be captured, requires LogErrors to be set to true.
+	.PARAMETER LogErrors
+		Logs the errors when set to true.
+    .PARAMETER LowFreeSpace
+        Shows only information for drives lower than 10% is set.
+	#>
 [CmdletBinding()]
 param(
     [string[]]$ComputerName=$env:COMPUTERNAME,
@@ -79,6 +106,16 @@ param(
 }
 
 function Get-OSInfo {
+<#
+	.SYNOPSIS
+		This function provides a way to pull Operating System information from a local or remote computer via WMI.
+	.PARAMETER Computername
+		The name of the computer to invoke action on. Defaults to local machine
+	.PARAMETER ErrorLog
+		The path to where errors should be captured, requires LogErrors to be set to true.
+	.PARAMETER LogErrors
+		Logs the errors when set to true.
+	#>
 [CmdletBinding()]
 param(
     [string[]]$ComputerName=$env:COMPUTERNAME,
